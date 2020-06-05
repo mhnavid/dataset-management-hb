@@ -4,6 +4,8 @@ import Logo from '../../images/logo.png';
 import Dropzone from "react-dropzone";
 import uuid from 'react-uuid';
 import axios from 'axios';
+import value from "../../value";
+import {Redirect} from "react-router-dom";
 
 class Home extends Component{
 
@@ -140,8 +142,7 @@ class Home extends Component{
         lastModifiedDate,
         jobId
     ) {
-        console.log(lastModifiedDate)
-        await axios.post('http://localhost:3001/api/image-detail',{
+        await axios.post(`${value.BASE}/api/image-detail`,{
             newFileName: newFileName,
             originalFileName: originalFileName,
             relativePath: relativePath,
@@ -164,7 +165,7 @@ class Home extends Component{
     }
 
      retrieveNewURL(file, cb) {
-         axios.get(`http://localhost:3001/api/presignedUrl?name=${file.name}`)
+         axios.get(`${value.BASE}/api/presignedUrl?name=${file.name}`)
             .then((response) =>{
                 if (!response.data.error){
                     cb(file, response.data.url);
@@ -177,6 +178,9 @@ class Home extends Component{
     }
 
     render(){
+        if (!this.props.location.verification){
+            return <Redirect to="/"/>
+        }
         return (
             <div>
                 <div>
@@ -202,7 +206,7 @@ class Home extends Component{
                                     onDrop={
                                         (acceptedFiles) => {
                                             acceptedFiles.map((file) => {
-                                                console.log(file.lastModifiedDate);
+                                                // console.log(file.lastModifiedDate);
                                                 let reader = new FileReader();
                                                 reader.readAsDataURL(file);
                                                 reader.onload = () => {

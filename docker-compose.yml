@@ -1,0 +1,15 @@
+version: '3'
+services:
+  dafrontend:
+    image: datafrontend:1.0
+    ports:
+      - "8000:8000"
+    links: 
+      - "dabackend"
+  dabackend:
+    image: databackend:1.0
+    ports:
+      - "7000:7000"
+      - "9229:9229"
+    environment:
+      - MONGO_HOST=192.168.99.100

@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/image-details', {useNewUrlParser: true});
+const mongoHost     = process.env.MONGO_HOST     || '192.168.99.100';
+const mongoPort     = process.env.MONGO_PORT     || '27017';
+const mongoUsername = process.env.MONGO_USERNAME || '';
+const mongoPassword = process.env.MONGO_PASSWORD || '';
+const mongoDBName   = process.env.MONGO_DBNAME   || 'image-details';
+
+if (mongoUsername != ''){
+    mongoose.connect('mongodb://'+mongoUsername+':'+mongoPassword+'@'+mongoHost+':'+mongoPort+'/'+mongoDBName, {useNewUrlParser: true, useUnifiedTopology: true});
+} else {
+    mongoose.connect('mongodb://'+mongoHost+':'+mongoPort+'/'+mongoDBName, {useNewUrlParser: true, useUnifiedTopology: true});
+}
+
 mongoose.connection.on('error', (e) => {
     console.log(e);
 });

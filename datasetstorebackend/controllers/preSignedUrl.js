@@ -2,12 +2,18 @@ const express    = require('express');
 const router     = express.Router();
 const minio      = require('minio');
 
-let client = new minio.Client({
-    endPoint: '192.168.99.100',
-    port: 9000,
-    useSSL: false,
-    accessKey: 'minioadmin',
-    secretKey: 'minioadmin'
+const minioHost         = process.env.MINIO_HOST        || '192.168.99.100';
+const minioPort         = process.env.MINIO_PORT        ||  9000;
+const minioUseSSL       = process.env.MINIO_SSL         ||  false;
+const minioAccessKey    = process.env.MINIO_ACCESSKEY   || 'minioadmin';
+const minioSecrectKey   = process.env.MINIO_SECRETKEY   || 'minioadmin';
+
+const client = new minio.Client({
+    endPoint: minioHost,
+    port: minioPort,
+    useSSL: minioUseSSL,
+    accessKey: minioAccessKey,
+    secretKey: minioSecrectKey
 });
 
 router.get('/api/presignedUrl', (req, res) => {

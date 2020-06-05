@@ -2,17 +2,19 @@ const createError  = require('http-errors');
 const express      = require('express');
 const logger       = require('morgan');
 const bodyParser   = require('body-parser');
-const fileUpload   = require('express-fileupload');
+// const fileUpload   = require('express-fileupload');
 const upload       = require('./controllers/upload');
 const preSignedUrl = require('./controllers/preSignedUrl');
 const imageDetail  = require('./controllers/imageDetail');
+const verification = require('./controllers/verification');
 
 const index = express();
 
 index.use(bodyParser.json());
 index.use(logger('dev'));
-index.use(fileUpload());
-index.use(upload);
+// index.use(fileUpload());
+// index.use(upload);
+index.use(verification);
 index.use(preSignedUrl);
 index.use(imageDetail);
 
